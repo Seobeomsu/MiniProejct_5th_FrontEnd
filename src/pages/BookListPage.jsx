@@ -5,6 +5,16 @@ import { Box, Pagination, Typography, Stack } from "@mui/material";
 
 export default function BookListPage() {
   // 더 자세한 테스트를 위한 더미 데이터 (이미지의 스키마 기반)
+  // TODO: 백엔드 준비 후 GET /api/v1/books (JWT 필요)로 교체
+  /*
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("/api/v1/books", { headers: token ? { Authorization: `Bearer ${token}` } : {} })
+      .then((res) => res.ok ? res.json() : Promise.reject(res))
+      .then(setBooks)
+      .catch(() => {});
+  }, []);
+  */
   const books = [
     {
       id: 1,

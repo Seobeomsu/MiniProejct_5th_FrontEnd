@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import AivleLogo from '../assets/aivle_logo.png';
 
 
-const API_BASE_URL = "http://localhost:8080"; // 백엔드 주소에 맞게 수정
+const API_BASE_URL = "/api/v1/auth"; // TODO: 백엔드 준비 후 실제 요청 테스트 필요 (POST /api/v1/auth/register)
 
 export default function SignupPage() {
     const navigate = useNavigate();
@@ -68,7 +68,22 @@ export default function SignupPage() {
         try {
             console.log("서버로 전송할 데이터:", dataToSend);
 
-            alert("회원가입 성공! 로그인 페이지로 이동합니다.");
+            // TODO: 백엔드 연결 후 주석 해제하여 회원가입 요청 테스트
+            /*
+            const res = await fetch(`${API_BASE_URL}/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dataToSend),
+            });
+
+            if (!res.ok) {
+                if (res.status === 409) setError("이미 등록된 이메일입니다.");
+                else setError("회원가입 중 오류가 발생했습니다.");
+                return;
+            }
+            */
+
+            alert("회원가입 성공! 로그인 페이지로 이동합니다. (백엔드 연결 후 실 테스트 필요)");
             navigate('/login');
 
         } catch (err) {

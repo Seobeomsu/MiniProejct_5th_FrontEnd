@@ -96,6 +96,7 @@ export default function BookEditPage() {
 
     try {
       const token = localStorage.getItem("token");
+      // TODO: 백엔드 준비 후 실 요청 테스트 (PUT /api/v1/books/:id)
       const res = await fetch(`${API_BASE_URL}/books/${id}`, {
         method: "PUT",
         headers: {

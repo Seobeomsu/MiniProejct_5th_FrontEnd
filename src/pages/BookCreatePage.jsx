@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import "../css/BookCreatePage.css";
 import AivleLogo2 from '../assets/aivle_logo2.png';
 
+const API_BASE_URL = "/api/v1"; // TODO: 백엔드 준비 후 실제 요청 테스트 필요 (POST /api/v1/books)
+
 // React 컴포넌트 → UI를 화면에 그리는 함수.
 export default function BookCreatePage() {
     const [coverUrl, setCoverUrl] = useState("");
@@ -54,15 +56,18 @@ export default function BookCreatePage() {
         try {
             const payload = { ...form, coverUrl };
 
-            const res = await fetch("/api/books", {
+            // TODO: 백엔드 연결 후 주석 해제하여 등록 API 테스트
+            /*
+            const res = await fetch(`${API_BASE_URL}/books`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });
 
             if (!res.ok) throw new Error("서버 오류");
+            */
 
-            setMessage("도서가 정상적으로 등록되었습니다.");
+            setMessage("도서 등록 요청이 완료되었습니다. (백엔드 연결 후 실 테스트 필요)");
 
             setForm(initialForm);
             setCoverUrl("");

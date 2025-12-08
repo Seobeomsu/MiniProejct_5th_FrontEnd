@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import AivleLogo from '../assets/aivle_logo.png';
 
 
-const API_BASE_URL = "http://localhost:8080"; // 백엔드 주소에 맞게 수정
+const API_BASE_URL = "/api/v1/auth"; // TODO: 백엔드 준비 후 실제 요청 테스트 필요 (POST /api/v1/auth/login)
 
 export default function LogInPage() {
     const navigate = useNavigate();
@@ -29,6 +29,34 @@ export default function LogInPage() {
             setErrorMessage("이메일과 비밀번호를 모두 입력해주세요.");
             return;
         }
+
+        // TODO: 백엔드 연결 후 주석 해제하여 로그인 동작 확인
+        /*
+        try {
+            const res = await fetch(`${API_BASE_URL}/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password,
+                }),
+            });
+
+            if (!res.ok) {
+                if (res.status === 401) setErrorMessage("이메일 또는 비밀번호가 올바르지 않습니다.");
+                else if (res.status === 404) setErrorMessage("계정을 찾을 수 없습니다.");
+                else setErrorMessage("로그인 중 오류가 발생했습니다.");
+                return;
+            }
+
+            const data = await res.json();
+            localStorage.setItem("token", data?.data?.token);
+            navigate("/books");
+        } catch (err) {
+            console.error(err);
+            setErrorMessage("로그인 중 오류가 발생했습니다.");
+        }
+        */
     };
 
     return (
@@ -103,4 +131,3 @@ export default function LogInPage() {
         </Container>
     );
 };
-
