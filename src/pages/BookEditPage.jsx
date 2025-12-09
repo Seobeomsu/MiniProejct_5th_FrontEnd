@@ -10,7 +10,7 @@ export default function BookEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // ✅ CreatePage와 동일하게: title, author, description만 사용
+  // CreatePage와 동일한 필드 구조
   const initialForm = {
     title: "",
     author: "",
@@ -24,7 +24,7 @@ export default function BookEditPage() {
   const [message, setMessage] = useState("");
   const [globalError, setGlobalError] = useState("");
 
-  // ✅ 기존 도서 정보 불러오기
+  // 기존 도서 정보 불러오기
   useEffect(() => {
     const fetchBook = async () => {
       setLoading(true);
@@ -54,7 +54,7 @@ export default function BookEditPage() {
         if (!res.ok) throw new Error("도서 정보를 불러오지 못했습니다.");
 
         const raw = await res.json();
-        const data = raw?.data ?? raw; // ApiResponse<T> 또는 순수 객체 대응
+        const data = raw?.data ?? raw;
 
         const nextForm = {
           title: data.title || "",
@@ -77,13 +77,11 @@ export default function BookEditPage() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    // 입력 중 에러/메시지 초기화
     setErrors({});
     setMessage("");
     setGlobalError("");
   };
 
-  // ✅ CreatePage와 동일한 검증 로직
   const validate = () => {
     const next = {};
     if (!form.title.trim()) next.title = "제목은 필수입니다.";
@@ -106,7 +104,6 @@ export default function BookEditPage() {
     setGlobalError("");
 
     try {
-      // ✅ CreatePage와 동일한 payload 구조 (title/author/description만)
       const payload = {
         title: form.title.trim(),
         author: form.author.trim(),
@@ -138,16 +135,14 @@ export default function BookEditPage() {
       }
       if (!res.ok) throw new Error("서버 오류");
 
-      // 응답 바디가 있으면 로그만 찍고, 없어도 무시
       try {
         const raw = await res.json();
         console.log("UPDATE RESPONSE:", raw);
       } catch (_) {
-        // 204 No Content 등은 무시
+        // 204 등 응답 바디 없음
       }
 
       setMessage("도서 정보가 수정되었습니다.");
-      // ✅ 수정 완료 후 상세 페이지로 이동 (원래 로직 유지)
       setTimeout(() => navigate(`/books/${id}`), 800);
     } catch (err) {
       console.error(err);
@@ -161,7 +156,18 @@ export default function BookEditPage() {
     return (
       <div className="book-create-card">
         <div className="book-form-wrapper">
-          <h2 className="book-form-title">도서 정보를 불러오는 중입니다...</h2>
+          <form className="book-form">
+            <div className="book-form-header">
+              <div className="logo-container">
+                <img
+                  src={AivleLogo2}
+                  alt="에이블스쿨"
+                  className="logo_trip-image"
+                />
+              </div>
+              <h2 className="book-form-title">도서 정보를 불러오는 중...</h2>
+            </div>
+          </form>
         </div>
       </div>
     );
@@ -171,17 +177,28 @@ export default function BookEditPage() {
     return (
       <div className="book-create-card">
         <div className="book-form-wrapper">
-          <h2 className="book-form-title">도서 수정</h2>
-          <p className="form-message" style={{ color: "red" }}>
-            {globalError}
-          </p>
-          <button
-            type="button"
-            className="book-form-button"
-            onClick={() => navigate(-1)}
-          >
-            돌아가기
-          </button>
+          <form className="book-form">
+            <div className="book-form-header">
+              <div className="logo-container">
+                <img
+                  src={AivleLogo2}
+                  alt="에이블스쿨"
+                  className="logo_trip-image"
+                />
+              </div>
+              <h2 className="book-form-title">도서 수정</h2>
+            </div>
+            <p className="form-message" style={{ color: "red" }}>
+              {globalError}
+            </p>
+            <button
+              type="button"
+              className="book-form-button"
+              onClick={() => navigate(-1)}
+            >
+              돌아가기
+            </button>
+          </form>
         </div>
       </div>
     );
@@ -190,15 +207,19 @@ export default function BookEditPage() {
   return (
     <div className="book-create-card">
       <div className="book-form-wrapper">
-        {/* 로고 */}
-        <div className="logo-container">
-          <img src={AivleLogo2} alt="에이블스쿨" className="logo_trip-image" />
-        </div>
-
         <form className="book-form" onSubmit={handleSubmit}>
-          <h2 className="book-form-title">도서 수정</h2>
+          {/* 🔥 로고 + 제목 한 줄 (Create와 동일 구조) */}
+          <div className="book-form-header">
+            <div className="logo-container">
+              <img
+                src={AivleLogo2}
+                alt="에이블스쿨"
+                className="logo_trip-image"
+              />
+            </div>
+            <h2 className="book-form-title">도서 수정</h2>
+          </div>
 
-          {/* 전역 에러 */}
           {globalError && (
             <p className="form-message" style={{ color: "red" }}>
               {globalError}

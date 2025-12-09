@@ -10,7 +10,7 @@
     background-color: #ffffff;
 }
 
-/* ================== 상단 : 검색 + 슬라이드 ================== */
+/* ================== 상단 : 슬라이드 ================== */
 
 .home-top {
     display: flex;
@@ -18,35 +18,21 @@
     gap: 10px;
 }
 
-/* 검색바 */
-.home-search-row {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.home-search-input {
-    width: 360px;
-    max-width: 100%;
-    padding: 9px 14px;
-    border-radius: 999px;
-    border: 2px solid #1694a3;
-    font-size: 14px;
-    outline: none;
-}
-
 /* 슬라이드 영역 */
 .home-hero {
     position: relative;
     width: 100%;
+    max-width: 1442px; /* 너무 넓어지는 것 방지 */
     display: flex;
     align-items: center;
 }
 
 /* 실제 이미지가 들어가는 박스 */
 .home-hero-slide {
-    position: relative;          /* 이미지를 겹치게 하기 위해 추가 */
+    position: relative;
     flex: 1;
-    min-height: 350px;
+    width: 100%;
+    min-height: 357px;
     border-radius: 24px;
     overflow: hidden;
     background-color: #000;
@@ -65,8 +51,8 @@
     opacity: 0;
     transform: scale(1.02);      /* 살짝 줌인된 상태 */
     transition:
-            opacity 0.8s ease-in-out,
-            transform 0.8s ease-in-out;
+        opacity 0.8s ease-in-out,
+        transform 0.8s ease-in-out;
 }
 
 /* 현재 슬라이드만 보이게 */
@@ -110,7 +96,7 @@
 
 .home-bottom {
     display: grid;
-    grid-template-columns: 2.1fr 1.2fr; /* 왼쪽이 조금 더 넓게 */
+    grid-template-columns: 1fr; /* 현재는 오른쪽 영역만 사용 */
     gap: 16px;
 }
 
@@ -125,7 +111,7 @@
     margin-bottom: 12px;
 }
 
-/* ---------- 최근 본 책 ---------- */
+/* ---------- 최근 본 책 (현재는 미사용) ---------- */
 
 .recent-book-list {
     display: grid;
@@ -167,7 +153,7 @@
     color: #555;
 }
 
-/* ---------- 추천 도서 ---------- */
+/* ---------- 추천 도서 (최근 업데이트 된 도서) ---------- */
 
 .home-section-recommend {
     /* 오른쪽 세로 영역 */
@@ -175,35 +161,57 @@
 
 .recommend-book-list {
     display: flex;
-    gap: 24px; /* 카드가 커졌으니 간격도 조금 넓힘 */
+    gap: 24px;
+    flex-wrap: wrap;
 }
 
+/* 카드 하나 */
 .recommend-book-card {
-    flex: 1;
-    min-width: 200px;       /* 기존 120px → 360px (3배) */
+    flex: 1 1 220px;
+    min-width: 220px;
+    max-width: 260px;
     background-color: #ffffff;
-    border-radius: 20px;    /* 크기에 맞게 조금 더 둥글게 */
-    padding: 28px 20px 32px; /* 전체 여백도 크게 */
+    border-radius: 20px;
+    padding: 20px 18px 24px;
     display: flex;
     flex-direction: column;
-    gap: 16px;              /* 내부 요소 간격 증가 */
+    gap: 16px;
     align-items: center;
     box-shadow: 0 4px 14px rgba(15, 86, 116, 0.08);
 }
 
+/* 표지 영역 */
 .recommend-book-cover {
     width: 100%;
-    height: 200px;          /* 기존 120px → 360px (3배) */
+    height: 200px;
     border-radius: 16px;
     background-color: #e4f1f6;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.recommend-book-title {
-    font-size: 20px;        /* 제목도 더 크게 */
-    font-weight: 600;
-    text-align: center;
+/* 실제 이미지 */
+.recommend-book-cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
+/* 썸네일 없을 때 placeholder */
+.recommend-book-cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #1694a3, #52c7ea);
+}
 
 .recommend-book-body {
     width: 100%;
@@ -220,6 +228,14 @@
 /* ================== 반응형 ================== */
 
 @media (max-width: 1024px) {
+    .home-page {
+        padding: 16px 16px;
+    }
+
+    .home-hero {
+        max-width: 100%;
+    }
+
     .home-bottom {
         grid-template-columns: 1fr;
     }

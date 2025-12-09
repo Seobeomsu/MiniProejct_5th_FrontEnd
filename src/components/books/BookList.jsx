@@ -28,10 +28,16 @@ export default function BookList({ books }) {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: { xs: 1.5, md: 2 },
+        display: "grid",
+        gridTemplateColumns: {
+          xs: "1fr",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(3, 1fr)",   // 🔥 한 줄 3개
+        },
+        gap: { xs: 2, md: 3 },
         width: "100%",
+        minHeight: "200px",
+        alignItems: "stretch",
       }}
     >
       {books.map((book) => (
@@ -42,7 +48,6 @@ export default function BookList({ books }) {
           author={book.author}
           description={book.description}
           thumbnail={book.thumbnail}
-          createdAt={book.createdAt}
         />
       ))}
     </Box>

@@ -23,7 +23,6 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
-import HttpIcon from "@mui/icons-material/Http";
 
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import AivleLogo from "../../assets/aivle_logo.png";
@@ -48,14 +47,12 @@ function Layout(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  // ✅ 매 렌더마다 토큰 확인해서 로그인 여부 판별
   const token = localStorage.getItem("token");
   const isLoggedIn = !!token;
 
   const handleLogout = () => {
-    // 로그인 시 저장해둔 값들 정리
     localStorage.removeItem("token");
-    localStorage.removeItem("user"); // 있으면 같이 삭제
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
@@ -153,24 +150,22 @@ function Layout(props) {
           {/* 오른쪽 여백 */}
           <Box sx={{ flexGrow: 1 }} />
 
-          {/* ✅ 로그인 상태에 따라 버튼 분기 */}
+          {/* 로그인 상태에 따라 버튼 분기 */}
           <Box sx={{ display: "flex", gap: 1 }}>
             {isLoggedIn ? (
-              // ✅ 로그인 이후: 로그아웃 버튼만 표시
               <Button
                 color="inherit"
                 onClick={handleLogout}
                 sx={{
-                    textTransform: "none",
-                    fontWeight: 600,
-                    boxShadow: "none",
-                    "&:hover": { boxShadow: "0 0 8px rgba(0,0,0,0.25)" },
-                  }}
+                  textTransform: "none",
+                  fontWeight: 600,
+                  boxShadow: "none",
+                  "&:hover": { boxShadow: "0 0 8px rgba(0,0,0,0.25)" },
+                }}
               >
                 로그아웃
               </Button>
             ) : (
-              // ✅ 비로그인 상태: 로그인 / 회원가입 버튼
               <>
                 <Button
                   color="inherit"
@@ -248,17 +243,16 @@ function Layout(props) {
             flexGrow: 1,
             mt: 8,
             py: { xs: 2, md: 3 },
-            px: { xs: 2, md: 3 },
+            px: { xs: 1.5, md: 3 },
             bgcolor: "#f5f7fb00",
             display: "block",
             overflow: "auto",
-            width: "100%",
+            minHeight: "calc(100vh - 64px)",
           }}
         >
           <Box
             sx={{
               width: "100%",
-              maxWidth: "100%",
             }}
           >
             <Outlet />

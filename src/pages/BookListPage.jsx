@@ -1,15 +1,22 @@
 // src/pages/BookListPage.jsx
 import { useState, useEffect } from "react";
 import BookList from "../components/books/BookList";
-import { Box, Pagination, Typography, Stack, CircularProgress, Alert } from "@mui/material";
+import {
+  Box,
+  Pagination,
+  Typography,
+  Stack,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 
-// ✅ .env.local 에서 API 베이스 URL 사용 (예: http://localhost:8080)
+// .env.local 에서 API 베이스 URL 사용 (예: http://localhost:8080)
 const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
 export default function BookListPage() {
-  const [books, setBooks] = useState([]);      // 실제 서버 데이터
+  const [books, setBooks] = useState([]); // 실제 서버 데이터
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 12; // 4열 기준 한 페이지 12개 보여주기
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -44,21 +51,22 @@ export default function BookListPage() {
         }
 
         const raw = await res.json();
+        console.log("BOOK LIST RES:", raw);
 
-        // 🔁 API 정의서: [ { "id", "title", "author", "genre", "coverImageUrl" } ]
-        // 혹시 ApiResponse 래퍼로 감싸져 온 경우도 대비
-        const list = Array.isArray(raw) ? raw : Array.isArray(raw.data) ? raw.data : [];
+        const list = Array.isArray(raw)
+          ? raw
+          : Array.isArray(raw.data)
+          ? raw.data
+          : [];
 
-        // BookList 컴포넌트에 맞게 필드 매핑
-        const mapped = list.map((b) => ({
+        const sorted = [...list].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+
+        const mapped = sorted.map((b) => ({
           id: b.id,
           title: b.title,
           author: b.author,
-          description: b.description || "",      // 백엔드에 없으면 빈 문자열
-          genre: b.genre,
-          ownerName: b.ownerName || "",          // 없으면 비워둠
-          createdAt: b.createdAt || "",          // 없으면 비워둠
-          thumbnail: b.coverImageUrl || "",      // API 정의의 coverImageUrl → thumbnail
+          description: b.description || "",
+          thumbnail: b.bookCoverUrl || b.coverImageUrl || "",
         }));
 
         setBooks(mapped);
@@ -87,18 +95,33 @@ export default function BookListPage() {
     <Box
       sx={{
         width: "100%",
-        maxWidth: 1200,
-        mx: "auto",
-        px: { xs: 2, md: 3 },
+        px: { xs: 1.5, md: 2, xl: 3 }, 
         py: { xs: 2, md: 3 },
       }}
     >
-      <Stack spacing={1} sx={{ mb: 3 }}>
-        <Typography variant="h5" fontWeight={700}>
-          책 목록
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          사용자들이 업로드한 책 정보를 공유하는 페이지입니다.
+      {/* 상단 헤더 영역 – 좌측 타이틀, 우측 총 개수 */}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        justifyContent="space-between"
+        alignItems={{ xs: "flex-start", sm: "flex-end" }}
+        spacing={1}
+        sx={{ mb: 3 }}
+      >
+        <Stack spacing={0.5}>
+          <Typography variant="h5" fontWeight={700}>
+            책 목록
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            사용자들이 업로드한 책 정보를 공유하는 페이지입니다.
+          </Typography>
+        </Stack>
+
+        <Typography
+          variant="caption"
+          color="primary"
+          sx={{ fontWeight: 600, mt: { xs: 1, sm: 0 } }}
+        >
+          총 {books.length}권의 도서가 등록되어 있습니다.
         </Typography>
       </Stack>
 

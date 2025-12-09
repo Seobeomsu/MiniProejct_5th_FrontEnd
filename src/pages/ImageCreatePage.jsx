@@ -1,6 +1,6 @@
 // src/pages/ImageCreatePage.jsx
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../css/BookCreatePage.css";
 import AivleLogo2 from "../assets/aivle_logo2.png";
 
@@ -8,6 +8,8 @@ const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
 export default function ImageCreatePage() {
   const { id } = useParams(); // bookId
+  const navigate = useNavigate();
+
   const [prompt, setPrompt] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -88,16 +90,28 @@ export default function ImageCreatePage() {
     }
   };
 
+  const handleBackToPost = () => {
+    navigate(`/books/${id}`);
+  };
+
   return (
     <div className="book-create-card">
       <div className="book-form-wrapper">
         {/* 로고 영역 */}
-        <div className="logo-container">
-          <img src={AivleLogo2} alt="에이블스쿨" className="logo_trip-image" />
-        </div>
+
 
         <form className="book-form" onSubmit={handleGenerate}>
-          <h2 className="book-form-title">AI 표지 이미지 생성</h2>
+          {/*  로고 + 제목 한 줄 */}
+          <div className="book-form-header">
+            <div className="logo-container">
+              <img
+                src={AivleLogo2}
+                alt="에이블스쿨"
+                className="logo_trip-image"
+              />
+            </div>
+            <h2 className="book-form-title">AI 표지 이미지 생성</h2>
+          </div>
           <p className="form-message">도서 ID: {id}</p>
 
           {/* 프롬프트 입력 */}
@@ -129,7 +143,7 @@ export default function ImageCreatePage() {
             {loading ? "생성 중..." : "이미지 생성"}
           </button>
 
-          {/* 결과 이미지 */}
+          {/* 결과 이미지 + 돌아가기 버튼 */}
           {result && (
             <div style={{ marginTop: "24px" }}>
               <h3 className="book-form-title" style={{ fontSize: "18px" }}>
@@ -138,6 +152,21 @@ export default function ImageCreatePage() {
               <div className="cover-preview">
                 <img src={result} alt="generated cover" />
               </div>
+
+              {/* 게시글로 돌아가기 버튼 */}
+              <button
+                type="button"
+                onClick={handleBackToPost}
+                className="book-form-button"
+                style={{
+                  marginTop: "16px",
+                  backgroundColor: "#ffffff",
+                  color: "#1694a3",
+                  border: "1px solid #1694a3",
+                }}
+              >
+                도서로 돌아가기
+              </button>
             </div>
           )}
         </form>

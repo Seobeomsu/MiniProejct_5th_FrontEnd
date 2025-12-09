@@ -15,10 +15,8 @@ export default function BookCard({
   author,
   description,
   thumbnail,
-  createdAt,
 }) {
   const navigate = useNavigate();
-
   const handleClick = () => navigate(`/books/${id}`);
 
   return (
@@ -26,13 +24,13 @@ export default function BookCard({
       elevation={0}
       sx={{
         borderRadius: 2,
-        border: "1px solid #d5d5d5",
+        border: "1px solid #dddddd",
         overflow: "hidden",
         transition: "all 0.22s ease-out",
-        minHeight: { xs: 0, sm: 170 }, // 모바일은 자동, sm부터 높이 확보
+        height: 290,        // 🔥 카드 세로크기 증가
+        background: "white",
         "&:hover": {
-          boxShadow: "0 6px 18px rgba(0,0,0,0.10)",
-          borderColor: "transparent",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.10)",
           transform: "translateY(-3px)",
         },
       }}
@@ -41,73 +39,94 @@ export default function BookCard({
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            gap: { xs: 1.5, sm: 2 },
+            flexDirection: "row",       
             height: "100%",
           }}
         >
-          
-          {/* 🔥 썸네일 크게 */}
-          {thumbnail && (
-            <CardMedia
-              component="img"
-              image={thumbnail}
-              alt={title}
-              sx={{
-                width: { xs: "100%", sm: 120 },   // 모바일 전체폭, sm부터 고정폭
-                height: { xs: 200, sm: 160 },
-                maxHeight: { xs: 220, sm: "none" },
-                padding: 1,
-                objectFit: "cover",
-                borderRadius: 2,
-              }}
-            />
-          )}
+          {/* LEFT: 썸네일 (더 크게) */}
+          <Box
+            sx={{
+              width: 160,      // 🔥 더 크게
+              height: 260,     // 🔥 더 크게
+              flexShrink: 0,
+              borderRadius: 2,
+              overflow: "hidden",
+              bgcolor: "#e4f1f6",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              m: 1.2,
+            }}
+          >
+            {thumbnail ? (
+              <CardMedia
+                component="img"
+                image={thumbnail}
+                alt={title}
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            ) : (
+              <Typography sx={{ color: "#1694a3", fontWeight: 600 }}>
+                {title?.charAt(0) || "B"}
+              </Typography>
+            )}
+          </Box>
 
-          {/* 텍스트 영역 */}
+          {/* RIGHT: 텍스트 영역 */}
           <CardContent
             sx={{
               flex: 1,
               display: "flex",
               flexDirection: "column",
-              gap: { xs: 1, sm: 1.2 },
-              py: 1.5,
-              px: { xs: 1, sm: 1.5 },
+              gap: 0.8,
+              py: 1.6,
+              pr: 1.6,
             }}
           >
-            <Typography variant="h6" fontWeight={700}>
+            <Typography
+              variant="subtitle1"
+              fontWeight={700}
+              sx={{
+                lineHeight: 1.3,
+                wordBreak: "keep-all",
+              }}
+            >
               {title}
             </Typography>
 
             <Typography variant="body2" color="text.secondary">
-              저자: {author}
+              저자: <strong>{author}</strong>
             </Typography>
 
-            {/* 설명 – 3줄 정도로 늘림 */}
             {description && (
               <Typography
                 variant="body2"
                 color="text.secondary"
                 sx={{
+                  mt: 0.5,
                   display: "-webkit-box",
-                  WebkitLineClamp: { xs: 4, sm: 3 }, // 모바일 4줄, sm부터 3줄
+                  WebkitLineClamp: 4,
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
-                  lineHeight: 1.45,
+                  lineHeight: 1.4,
                 }}
               >
                 {description}
               </Typography>
             )}
 
-            {/* 하단 메타 정보 */}
-            {createdAt && (
-              <Box sx={{ mt: "auto", display: "flex", justifyContent: "flex-end" }}>
-                <Typography variant="caption" color="text.disabled">
-                  업로드: {createdAt}
-                </Typography>
-              </Box>
-            )}
+            <Box sx={{ mt: "auto", textAlign: "right" }}>
+              <Typography
+                variant="caption"
+                sx={{ color: "#1694a3", fontWeight: 600 }}
+              >
+                자세히 보기 →
+              </Typography>
+            </Box>
           </CardContent>
         </Box>
       </CardActionArea>
